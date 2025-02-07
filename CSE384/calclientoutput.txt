@@ -1,0 +1,63 @@
+Script started on 2021-12-06 18:35:37-05:00 [TERM="xterm" TTY="/dev/pts/15" COLUMNS="80" LINES="24"]
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ make clean
+rm -f *.o calclient calcserver
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ make all
+gcc -Wall -Wextra -g   -c -o calclient.o calclient.c
+gcc -Wall -Wextra -g   -c -o socketsetup.o socketsetup.c
+gcc   calclient.o socketsetup.o  -lpthread -o calclient
+gcc -Wall -Wextra -g   -c -o calcserver.o calcserver.c
+gcc   calcserver.o socketsetup.o  -lpthread -o calcserver
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calcclient
+Server Address = 127.0.0.1
+Server Port = 2058
+Enter First Number: 1 ^C
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calclient
+Please run the Calculator Server and try again.
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ script -q ./calcl[K[K[K[K[K[K[Kcalcclientouput1.[K.txt
+
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ 
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calclien[K[K[K[K[K[K[K[K[K[Kmake clean
+rm -f *.o calclient calcserver
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ make c[Kall
+gcc -Wall -Wextra -g   -c -o calclient.o calclient.c
+gcc -Wall -Wextra -g   -c -o socketsetup.o socketsetup.c
+gcc   calclient.o socketsetup.o  -lpthread -o calclient
+gcc -Wall -Wextra -g   -c -o calcserver.o calcserver.c
+gcc   calcserver.o socketsetup.o  -lpthread -o calcserver
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calclient
+Please run the Calculator Server and try again.
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calclient
+2891685
+Server Address = 127.0.0.1
+Server Port = 2058
+Enter First Number: 11
+Enter Second Number: 5
+Enter operation (1=ADD,2=SUB,3=MULT,4=DIV): 6 2
+Status: SUB Operation is Succesful
+Result: 6.000000
+Enter First Number: 11
+Enter Second Number: 5
+Enter operation (1=ADD,2=SUB,3=MULT,4=DIV): 5
+Status: Unknown operation
+Result: 0.000000
+Enter First Number: ^C
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ scripyt[K[Kt -q hw7.log
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ^C
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ s[Kexit
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ sceri[K[K[Kript -q hw7_client.log
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calcserver[4Pmake all./calcserver[1Plient[3Pmake allclean[2Pallclean
+rm -f *.o calclient calcserver
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ make clean./calcserver[4Pmake all./calcserver[4Pmake all
+make: *** No rule to make target 'calclient.o', needed by 'calclient'.  Stop.
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ make allclean./calcserver[4Pmake all./calcserver[4Pmake all./calcserver[2Pmake clean[2Pall[K./calclient
+bash: ./calclient: No such file or directory
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ./calclient
+bash: ./calclient: No such file or directory
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ls
+[0m[01;32mcalc[0m                  calcserver1.c         hw7_server.log      [01;32mudpclient.c[0m
+[01;32mcalcclient[0m            calcserver.c.txt      [01;32mmakefile[0m            udpclient_d.c
+calcclientouput1.txt  calcserveroutput.txt  server_replies.txt  [01;32mudpserver.c[0m
+calclient.c.txt       [01;32mclient[0m                socketsetup.c       udpserver_d.c
+calclientoutput.txt   hw7_client.log        [01;32msocketsetup.h[0m       udpserver_d.h
+[01;32mcalcserver1[0m           hw7.log               [01;32msocketsetup.ini[0m
+]0;klope

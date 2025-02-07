@@ -1,0 +1,47 @@
+#include <stdlib.h>
+#include <time.h>
+#include <cstdio>
+
+//Print array
+void print_array(int array[10][10] , int length){
+	 for (int i = 0; i < length; i++){
+		 printf("\n Row %d - ", i);
+		 for(int j = 0; j < length; j++){
+			printf("%d,", array[i][j]);
+		}
+	}
+	
+}
+//Sort Array
+void sort_array(int array[10][10], int length){
+       for (int row = 0; row < length; row++){
+	       for(int j = 0; j < length; j++){
+		       for( int k = j+1; k < length; k++){
+			       //Bubble Sort
+			       if(array[row][j] > array[row][k]){
+				       int swap = array[row][j];
+				       array[row][j] = array[row][k];
+				       array[row][k] = swap;
+				}
+			}
+		}
+       }
+}       
+int  main(){
+	//Initialize array
+	int Arr[10][10];
+	//Random seed
+	srand(time(NULL));
+	//Create ramdomized array
+	for (int i = 0; i < 10 ; i++){
+		for (int j= 0; j<10; j++){
+			Arr[i][j] = rand()%101;
+		}
+	}
+	printf("\nArray before Sorting: \n");
+	print_array(Arr,10);
+	printf("\nArray after Sorting: \n");
+	sort_array(Arr,10);
+	print_array(Arr,10);
+
+}

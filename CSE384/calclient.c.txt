@@ -1,0 +1,111 @@
+#include<stdio.h>    //printf
+#include<string.h> //memset
+#include<stdlib.h> //exit(0);
+#include<arpa/inet.h>
+#include<sys/socket.h>
+#include<unistd.h> //close
+#include "socketsetup.h"
+#define BUFLEN 512    //Max length of buffer
+
+// function to truncate stdin (i.e. keyboard input)
+void FlushStdin(void);
+
+
+// socket structure to define properties
+// must be at file scope so the thread function can see it as well as main
+struct sockaddr_in lsSAOther;
+socklen_t lnSockStructLen=sizeof(lsSAOther);
+
+// place to store socket handle.
+// must be at file scope so the thread function can see it as well as main
+int lnSocketId = 0;
+
+
+
+
+// simple routine to print an error and exit
+void PrintErrorAndExit(char *lanErrorString)
+{
+    perror(lanErrorString);
+    exit(1);
+}
+int main(void){
+	int running = system("pidof ./calcserver");
+	if (running==256 ){
+		printf("Please run the Calculator Server and try again.\n");
+	}else{
+		 // get the socket setup information
+    		SocketSetupStruct lsSocketSetup;
+    		SocketSetup("socketsetup.ini",&lsSocketSetup);
+		struct Data{
+			double firstNum;
+			double secondNum;
+			double result;
+	 		unsigned int operation;
+		 	char status[99];
+        };
+    		// socket structure to define properties
+    		struct sockaddr_in lsSAOther;
+
+    		// place to store socket handle
+    		int lnSocketId = 0;
+    		socklen_t lnSockStructLen=sizeof(lsSAOther);
+    		struct Data *lanRecBuf = malloc(sizeof *lanRecBuf);
+    		struct Data *lanMessage = malloc(sizeof *lanMessage);		
+    		// attempt to create a socket
+    		if ( (lnSocketId=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+		{
+        		PrintErrorAndExit("socket");
+    		}
+
+    		// zero out the structure used to define where the
+    		// data is going (destination) on the socket
+    		memset((char *) &lsSAOther, 0, sizeof(lsSAOther));
+
+    		// initialize the destination properties
+    		lsSAOther.sin_family = AF_INET;  // IPV4
+    		lsSAOther.sin_port = htons(lsSocketSetup.lnServerPort); // convert port to network byte order
+    		lsSAOther.sin_addr.s_addr = inet_addr(lsSocketSetup.lanServerAddress);
+
+    		// set the destination address in the destination properties
+    		if (inet_aton(lsSocketSetup.lanServerAddress, &lsSAOther.sin_addr) == 0)
+    		{
+        		PrintErrorAndExit("inet_aton() failed\n");
+    		}
+		while(1)
+		{
+			printf("Enter First Number: ");
+			scanf("%lf", &((*lanMessage).firstNum));
+			printf("Enter Second Number: ");
+			scanf("%lf", &((*lanMessage).secondNum));
+			printf("Enter operation (1=ADD,2=SUB,3=MULT,4=DIV): ");
+			scanf("%u", &((*lanMessage).operation));
+			
+			
+			if (sendto(lnSocketId, lanMessage, sizeof(*lanMessage) , 0 ,
+            (struct sockaddr *) &lsSAOther, lnSockStructLen)==-1)
+        		{
+            			PrintErrorAndExit("sendto()");
+     			}
+
+        		//receive a reply and print it
+        		//clear the buffer by filling null, it might have previously received data
+        		memset(lanRecBuf,'\0', sizeof(*lanRecBuf));
+
+        		//try to receive some data, this is a blocking call
+        		if (recvfrom(lnSocketId, lanRecBuf, sizeof(*lanRecBuf), 0,
+            (struct sockaddr *) &lsSAOther, &lnSockStructLen) == -1)
+        		{
+				PrintErrorAndExit("recvfrom()");
+        		}
+
+        		// print reply from server
+				printf("Status: %s",lanRecBuf -> status);
+        		printf("\nResult: %f\n",lanRecBuf -> result);
+    		}
+
+    		// close our socket resource
+    		close(lnSocketId);
+    		return 0;
+	}
+}

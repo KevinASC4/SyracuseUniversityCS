@@ -1,0 +1,61 @@
+#include <stdio.h> 
+#include <stdbool.h>
+//Function that converts
+int converter (int base, int number){
+	int decimal, rem, weight;
+	decimal = 0, weight = 1;
+	while (number != 0){
+		rem = number %10;
+		decimal = decimal + rem*weight;
+		number=number/10;
+		weight = weight*base;
+}return decimal;
+}
+bool checkNumandBase(int base, int num){
+	int rem;
+	bool value = true;
+	while (num!=0){
+		rem= num % 10;
+		num= num/10;
+		if (rem >= base){
+			value = false;
+			break;
+		}
+		}
+	return value;
+}
+int main(void){
+//Conditional that breaks while loop
+bool validBase = true;
+///While loop to keep program alive
+while (validBase){
+	//Declare variables
+	int base,num;
+	//Get variables
+	printf("\nEnter Base(2,4 or 8). Use -1 to exit):");
+	scanf("%d" , &base);
+	printf("\nEnter number to convert to Base 10:");
+	scanf("%d", &num);
+	//Switch statement
+	switch (base){
+		//If case is equal to -1
+		case -1 :
+			validBase = false;
+			break;	
+		//If base numbers are valid
+		case 2:
+		case 4:
+		case 8:
+			if (checkNumandBase(base,num) == false){
+				printf("\nError: a single digit is larger than the base.");
+				printf("\nThe Base 10 equivalent is: 0");
+			}else if (checkNumandBase(base,num) == true) {
+				printf("\nThe base 10 equivalent is: %d", converter(base,num));}
+			break;
+		default:
+			printf("\nBase %d is not allowed! Try again!", base);
+
+	}
+}
+return 0;
+}  

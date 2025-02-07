@@ -1,0 +1,35 @@
+Script started on 2021-12-06 18:35:19-05:00 [TERM="xterm" TTY="/dev/pts/14" COLUMNS="80" LINES="24"]
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ .[K./calcserver
+Server Address = 127.0.0.1
+Server Port = 2058
+
+Waiting for data...Received packet from 127.0.0.1:51542
+First Number: 11.000000
+Second NUmber: 5.000000
+SUB Operation is SuccesfulResult: 6.000000
+Waiting for data...Received packet from 127.0.0.1:51542
+First Number: 11.000000
+Second NUmber: 5.000000
+Unknown operationResult: 0.000000
+Waiting for data...^C
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ cp calclient[K[K[K[K[K[K[K[K[K[K[K[Kmv dq[K[Kd[Kcalclient.c calclient.c.txt
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ mv calcserver.c calcserver.c.txt
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ls
+[0m[01;32mcalc[0m                  [01;32mcalcserver[0m            [01;32mmakefile[0m            udpclient_d.c
+[01;32mcalcclient[0m            [01;32mcalcserver1[0m           server_replies.txt  [01;32mudpserver.c[0m
+calcclientouput1.txt  calcserver1.c         socketsetup.c       udpserver_d.c
+[01;32mcalclient[0m             calcserver.c.txt      [01;32msocketsetup.h[0m       udpserver_d.h
+calclient.c.txt       calcserver.o          [01;32msocketsetup.ini[0m
+calclient.o           calcserveroutput.txt  socketsetup.o
+calclientoutput.txt   [01;32mclient[0m                [01;32mudpclient.c[0m
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ^C
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ ls
+[0m[01;32mcalc[0m                  [01;32mcalcserver[0m            [01;32mmakefile[0m            udpclient_d.c
+[01;32mcalcclient[0m            [01;32mcalcserver1[0m           server_replies.txt  [01;32mudpserver.c[0m
+calcclientouput1.txt  calcserver1.c         socketsetup.c       udpserver_d.c
+[01;32mcalclient[0m             calcserver.c.txt      [01;32msocketsetup.h[0m       udpserver_d.h
+calclient.c.txt       calcserver.o          [01;32msocketsetup.ini[0m
+calclient.o           calcserveroutput.txt  socketsetup.o
+calclientoutput.txt   [01;32mclient[0m                [01;32mudpclient.c[0m
+]0;klopez11@lcs-vc-cis486-2: ~/hw7klopez11@lcs-vc-cis486-2:~/hw7$ c[Kvi cL[Kalcserveroutput.txt
+[?1049h[22;0;0t[>4;2m[?1h=[?2004h[1;24r[?12h[?12l[22;2t[22;1t[27m[23m[29m[m[H[2J[?25l[24;1H"calcserveroutput.txt" 0L, 0C[2;1H▽[6n[2;1H  [1;1H[>c]10;?]11;?[2;1H[1m[34m~                                                                               [3;1H~                                                                               [4;1H~                                                                               [5;1H~                                                                               [6;1H~                                                                               [7;1H~                                                                               [8;1H~                                                                               [9;1H~                                                                               [10;1H~                                                                               [11;1H~                                                                               [12;1H~                                                                               [13;1H~                                                                               [14;1H~                                                                               [15;1H~                                                                               [16;1H~                                                                               [17;1H~                                                                               [18;1H~                                                                               [19;1H~                  

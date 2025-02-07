@@ -1,0 +1,64 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+#include <string.h>
+//Print array
+void print_array(int array[] , int length){
+	for (int i = 0; i < length; i++){
+		printf("%d,", array[i]);
+	}
+	printf("\n");
+}
+//Swap function
+void swap(int *element1Ptr, int *element2Ptr){
+	int hold = *element1Ptr;
+	*element1Ptr = *element2Ptr;
+	*element2Ptr = hold;
+}
+//Order function pointer to ascending
+int ascending(int a, int b){
+	int x = b < a;
+	return x;
+}
+//Order functiom pointer to descending
+int descending(int a, int b){
+	int x = b > a;
+	return x;
+}
+//Bubble sort
+void BubbleSort(int (compare) (int a, int b), int array[], int length){
+	for (int pass = 1; pass < length; pass++){
+		for (int count = 0; count < length - 1; count++){
+			if ((*compare) (array[count], array[count+1])){
+				swap(&array[count],&array[count+1]);
+		       }
+		}
+	}
+}
+//Main that contains command line arguments
+int main( int argc, char *argv[]){
+	//Give arguments variable names
+	int length = atoi(argv[1]);
+	char order = *argv[2];
+	printf("The array will contain %d elements\n\n", length);
+	//random seed with time
+	srand(time(NULL));
+	//Allocate memory to array
+	int* mainArray = (int*)malloc(length*sizeof(int));
+	//create randomized array
+	for (int i = 0; i < length ; i++){
+		mainArray[i]= rand()%101;
+	}
+	//Print array before sorting
+	printf("Array before sorting:\n\n");
+	print_array(mainArray, length);
+	//Print Array after sorting
+	printf("Array after sorting:\n\n");
+	if (strcasecmp("d",&order) >= 0){
+		BubbleSort(ascending , mainArray, length);
+	}else{
+		BubbleSort(descending , mainArray, length);
+	}
+	print_array(mainArray,length);
+	free(mainArray);
+}

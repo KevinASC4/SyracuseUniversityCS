@@ -1,0 +1,117 @@
+#include<stdio.h>    //printf
+#include<string.h> //memset
+#include<stdlib.h> //exit(0);
+#include<arpa/inet.h>
+#include<sys/socket.h>
+#include<unistd.h> //close
+#include "socketsetup.h"
+#define SERVER "127.0.0.1"
+#define BUFLEN 512    //Max length of buffer
+#define PORT 2058    //The port on which to send data
+#define BUFLEN 512    //Max length of buffer
+
+// simple routine to print an error and exit
+void PrintErrorAndExit(char *lanErrorString)
+{
+    perror(lanErrorString);
+    exit(1);
+}
+
+int main(void)
+{
+    struct sockaddr_in lsSAMe, lsSAOther;
+
+    int lnSocketId = 0; // contains socket handle
+    int lnReceiveLen = 0;  // number of bytes received on socket
+    socklen_t lnSockStructLen = sizeof(lsSAOther); // length of socket structure
+
+    // clear receive buffer
+	struct Data{
+                        double firstNum;
+                        double secondNum;
+                        double result;
+                        unsigned int operation;
+                        char status[99];
+        };
+	struct Data *lanRecBuf = malloc(sizeof(struct Data));
+
+    // get the socket setup information
+    	SocketSetupStruct lsSocketSetup;
+    	SocketSetup("socketsetup.ini",&lsSocketSetup);
+
+
+    //create a UDP socket
+    if ((lnSocketId=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
+    {
+        PrintErrorAndExit("socket");
+    }
+
+    // zero out the structure
+    memset((char *) &lsSAMe, 0, sizeof(lsSAMe));
+
+    lsSAMe.sin_family = AF_INET; // use IPV4 network addressing
+    lsSAMe.sin_port = htons(lsSocketSetup.lnServerPort); // convert to network byte order
+    lsSAMe.sin_addr.s_addr = inet_addr(lsSocketSetup.lanServerAddress);
+
+
+    //bind socket to our specific port
+    if( bind(lnSocketId, (struct sockaddr*)&lsSAMe, sizeof(lsSAMe) ) == -1)
+    {
+        PrintErrorAndExit("bind");
+    }
+
+    //keep listening for data
+    while(1)
+    {
+        printf("\nWaiting for data...");
+        fflush(stdout);
+
+        //try to receive some data, this is a blocking call
+        // -1 indicates an error. anything 0 or above is assumed to be the number of bytes received.
+        if ((lnReceiveLen = recvfrom(lnSocketId, lanRecBuf, sizeof(*lanRecBuf), 0,
+            (struct sockaddr *) &lsSAOther, &lnSockStructLen)) == -1)
+        {
+            PrintErrorAndExit("recvfrom()");
+        }
+
+        //print details of the client/peer and the data received
+        printf("Received packet from %s:%d\n", inet_ntoa(lsSAOther.sin_addr), ntohs(lsSAOther.sin_port));
+        printf("First Number: %lf\n" , lanRecBuf->firstNum);
+		printf("Second NUmber: %lf\n", lanRecBuf -> secondNum);
+
+	if ((lanRecBuf -> operation) == 1){
+		(*lanRecBuf).result = (*lanRecBuf).firstNum + (*lanRecBuf).secondNum;
+		strcpy((*lanRecBuf).status,"ADD Operation is Succesful");
+		}
+	else if((lanRecBuf -> operation) == 2){
+		(*lanRecBuf).result = (*lanRecBuf).firstNum - (*lanRecBuf).secondNum;
+		strcpy((*lanRecBuf).status,"SUB Operation is Succesful");
+		}else if((lanRecBuf -> operation) == 3){
+		(*lanRecBuf).result = (*lanRecBuf).firstNum * (*lanRecBuf).secondNum;
+		strcpy((*lanRecBuf).status,"MULT Operation is Succesful");
+		}
+		else if((lanRecBuf -> operation) == 4){
+		(*lanRecBuf).result = (*lanRecBuf).firstNum / (*lanRecBuf).secondNum;
+		strcpy((*lanRecBuf).status,"DIV Operation is Succesful");
+		}
+		else{
+		(*lanRecBuf).result = 0;
+		strcpy((*lanRecBuf).status,"Unknown operation");
+		}
+		printf("%s",(*lanRecBuf).status);
+		printf("Result: %f",(*lanRecBuf).result);
+	//now reply the client with the same data
+        if (sendto(lnSocketId, lanRecBuf, sizeof(*lanRecBuf), 0, (struct sockaddr*) &lsSAOther, lnSockStructLen) == -1)
+        {
+            PrintErrorAndExit("sendto()");
+        }
+
+        // clear buffer
+        memset(lanRecBuf,0,sizeof(*lanRecBuf));
+    }
+
+    // close the socket resource
+    close(lnSocketId);
+    return 0;
+}
+ 

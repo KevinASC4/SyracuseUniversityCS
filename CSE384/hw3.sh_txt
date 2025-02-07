@@ -1,0 +1,33 @@
+# !/bin/bash
+
+while (true)
+do
+# Input type of operation
+	echo "Simple Calculator"
+	echo "1- Add Numbers"
+	echo "2- Subtract Numbers"
+	echo "3- Multiply Numbers"
+	echo "4- Divide Numbers"
+	echo "0- Exit"
+	read -p "Enter Selection: " ch
+	#Check ch
+	if [ $ch -eq 0 ]
+	then
+		exit 
+	fi
+		read -p "Enter first number: " a
+		read -p "Enter second number: " b 
+	# Switch Case to perform
+	# calculator operations
+		case $ch in
+  		1)res=`echo $a + $b | bc`
+  		;;
+  		2)res=`echo $a - $b | bc`
+  		;;
+	  	3)res=`echo $a \* $b | bc`
+  		;;
+	  	4)res=`echo "scale=2; $a / $b" | bc`
+  		;;
+		esac
+		echo "Result : $res"
+done
