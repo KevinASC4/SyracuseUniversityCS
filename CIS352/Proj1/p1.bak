@@ -1,0 +1,130 @@
+#lang racket
+
+;;; Project 0 Tic-tac-toe with Racket
+;;; 
+;;; Please immediately read README.md
+
+(provide board?
+         next-player
+          valid-move?
+          make-move
+          winner?
+          calculate-next-move)
+
+;; 
+;; Useful utility functions
+;;
+
+; Returns the number of elements in l for which the predicate f
+; evaluates to #t. For example:
+;
+;    (count (lambda (x) (> x 0)) '(-5 0 1 -3 3 4)) => 3
+;    (count (lambda (x) (= x 0)) '(-5 0 1 -3 3 4)) => 1
+(define (count f l)
+  (cond [(empty? l) 0]
+        [(f (car l)) (add1 (count f (cdr l)))]
+        [else (count f (cdr l))]))
+;; defines the side-board length to determine location of where a move goes
+(define (side-board-length board) (sqrt (length board)))
+;; 
+;; Your solution begins here
+;; 
+(define (board? lst)
+  (if (and (validLength? lst) (rightSymbols? lst) (<= (abs (- (xCount lst) (oCount lst))) 1) (>= (xCount lst) (oCount lst)))
+      #t #f))
+
+
+  (define (square x)    
+    (sqrt (length x)))
+  (define (validLength? lst)      
+    (if (integer? (square lst)) #t #f))
+
+  (define (SymbolCheck? lst)         
+    (if (cond
+          [(empty? lst) #t]                 ;;
+          [(equal? (car lst) 'E) (SymbolCheck? (cdr lst))]
+          [(equal? (car lst) 'O) (SymbolCheck? (cdr lst))]
+          [(equal? (car lst) 'X) (SymbolCheck? (cdr lst))]
+          [else #f])
+        #t #f))
+
+  (define (CountX lst)                  
+    (if (null? lst)
+        0
+        (if (equal? (car lst) 'X) (+ 1 (CountX (cdr lst)))
+            (CountX (cdr lst)))))
+
+  (define (CountO lst)                      ;; counts Os
+    (if (null? lst)
+        0
+        (if (equal? (car lst) 'O) (+ 1 (CountO (cdr lst)))
+            (CountO (cdr lst)))))
+
+;;; From the board, calculate who is making a move this turn
+(define (next-player board)
+  (if (and (board? board) (not (= (+ (CountO board) (CountX board)) (length board))))
+      (if (= (CountX board) 0) 'X
+          (if (= (CountX board) (CountO board)) 'X
+              'O)) #f))
+
+;;; If player ('X or 'O) want to make a move, check whether it's this
+;;; player's turn and the position on the board is empty ('E)
+(define (valid-move? board row col player)
+  (if (and (equal? (next-player board) player) (< row (square board)) (< col (square board)))
+      (if (equal? (list-ref board (pos board row col)) 'E) #t #f)
+      #f))
+  
+  (define (pos board x y)                 
+    (+ (* (square board) x) y))
+
+;;; To make a move, replace the position at row col to player ('X or 'O)
+(define (make-move board row col player)
+  (if (valid-move? board row col player) 
+    (list-set board (pos board row col) player) #f))
+
+;;; To determine whether there is a winner?
+  (define (horizontal board player row col) 
+    (let ([size (square board)]
+          [colX 0])
+      (if (board? board)
+          (cond [(= col size) player]
+                [(= row size) #f]
+                [(equal? (list-ref board (pos board row col)) player) (horizontal board player row (+ 1 col))]
+                [(not (= row size)) (horizontal board player (+ 1 row) colX)]
+                [else #f])
+          #f)))
+
+  (define (vertical board player row col)
+    (let ([size (square board)]
+          [rowX 0])
+      (if (board? board)
+          (cond [(= row size) player]
+                [(= col size) #f]
+                [(equal? (list-ref board (pos board row col)) player) (vertical board player (+ 1 row) col)]
+                [(not (= col size)) (vertical board player rowX (+ 1 col))]
+                [else #f])
+          #f)))
+
+  (define (diagonal1 board player row col) 
+    (let ([size (square board)])
+      (if (board? board)
+          (cond [(or (= row size) (= col size)) player]
+                [(equal? (list-ref board (pos board row col)) player) (diagonal1 board player (+ 1 row) (+ 1 col))]
+                [else #f])
+          #f)))
+
+  (define (diagonal2 board player row col)
+    (let ([size (square board)])
+    (if (board? board)
+        (cond [(and (= row 0) (= col (- size 1))) player]
+              [(equal? (list-ref board (pos board row col)) player) (diagonal2 board player (- row 1) (+ 1 col))]
+              [else #f])
+        #f)))
+(define (winner? board)             
+  (let ([size (square board)])
+    (if (empty? board) #f
+    (cond [(or (horizontal board 'X 0 0) (vertical board 'X 0 0)) 'X]
+          [(or (horizontal board 'O 0 0) (vertical board 'O 0 0)) 'O]
+          [(or (diagonal1 board 'X 0 0) (diagonal2 board 'X (- size 1) 0)) 'X]
+          [(or (diagonal1 board 'O 0 0) (diagonal2 board 'O (- size 1) 0)) 'O]
+          [else #f]))))
